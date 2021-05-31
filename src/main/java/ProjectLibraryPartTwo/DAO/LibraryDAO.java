@@ -1,5 +1,6 @@
 package ProjectLibraryPartTwo.DAO;
 
+import ProjectLibraryPartTwo.Entity.Author;
 import ProjectLibraryPartTwo.Entity.Book;
 
 import java.util.List;
@@ -15,4 +16,6 @@ public interface LibraryDAO {
     boolean correctBookByIdNewTitleNewGenre(int id, String title, String genre);
 
     List<Book> getAllBooks();
+
+    List<Author> getAllAuthors();
 }

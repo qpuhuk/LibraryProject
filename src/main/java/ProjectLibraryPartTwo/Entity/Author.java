@@ -1,5 +1,8 @@
 package ProjectLibraryPartTwo.Entity;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 public class Author {
     private int id;
     private String firstName;
@@ -36,6 +39,18 @@ public class Author {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public Author createAuthor(ResultSet resultSet) {
+        Author author = new Author();
+        try {
+            author.setId(resultSet.getInt("Id"));
+            author.setFirstName(resultSet.getString("FirstName"));
+            author.setLastName(resultSet.getString("LastName"));
+        } catch (SQLException s) {
+            s.getStackTrace();
+        }
+        return author;
     }
 
     @Override

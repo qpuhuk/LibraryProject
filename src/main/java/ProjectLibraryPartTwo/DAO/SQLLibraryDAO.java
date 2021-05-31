@@ -1,6 +1,7 @@
 package ProjectLibraryPartTwo.DAO;
 
 import ProjectLibraryPartTwo.Connection.ConnectorBD;
+import ProjectLibraryPartTwo.Entity.Author;
 import ProjectLibraryPartTwo.Entity.Book;
 
 import java.sql.*;
@@ -8,6 +9,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 
 public class SQLLibraryDAO implements LibraryDAO {
 
@@ -27,6 +30,24 @@ public class SQLLibraryDAO implements LibraryDAO {
             throwables.printStackTrace();
         }
         return listAllBooks;
+    }
+
+    @Override
+    public List<Author> getAllAuthors() {
+        List<Author> listAllAuthors = new ArrayList<>();
+        try (Connection connection = ConnectorBD.getConnection()) {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(Queries.SELECT_ALL_AUTHORS);
+            Author author = new Author();
+            while (resultSet.next()) {
+                listAllAuthors.add(author.createAuthor(resultSet));
+            }
+            statement.close();
+            resultSet.close();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return listAllAuthors;
     }
 
     @Override
@@ -89,10 +110,34 @@ public class SQLLibraryDAO implements LibraryDAO {
             DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             LocalDate localDate = LocalDate.parse(date, dateTimeFormatter);
             statement.setDate(4, Date.valueOf(localDate));
+            List<Author> allAuthors = getAllAuthors();
+            PreparedStatement preparedStatement = null;
+            boolean checkAuthor = allAuthors.stream().noneMatch(author -> (author.getId() == idAuthor));
+            if (checkAuthor) {
+                int resultAuthor;
+                Scanner scanner = new Scanner(System.in);
+                System.out.println("Автора с таким ID не существует, введите его имя и фамилию ->");
+                TimeUnit.SECONDS.sleep(1);
+                System.out.println("Введите имя ->");
+                String name = scanner.nextLine();
+                System.out.println("Введите фамилию ->");
+                String serName = scanner.nextLine();
+                preparedStatement = connection.prepareStatement(Queries.INSERT_IN_AUTHOR);
+                preparedStatement.setInt(1, idAuthor);
+                preparedStatement.setString(2, name);
+                preparedStatement.setString(3, serName);
+                resultAuthor = preparedStatement.executeUpdate();
+                if (resultAuthor != 0) {
+                    System.out.println("Новый автор добавлен!!");
+                }
+            }
+            if (preparedStatement != null) {
+                preparedStatement.close();
+            }
             result = statement.executeUpdate();
-            connection.commit();
             statement.close();
-        } catch (SQLException throwables) {
+            connection.commit();
+        } catch (SQLException | InterruptedException throwables) {
             throwables.printStackTrace();
         }
         return result != 0;
@@ -124,6 +169,7 @@ public class SQLLibraryDAO implements LibraryDAO {
 
     @Override
     public boolean correctBookByIdNewTitleNewGenre(int id, String title, String genre) {
+        System.out.println("Ожидайте, идёт обработка базы данных...");
         List<Book> newList = getAllBooks();
         if (newList.isEmpty()) {
             System.out.println("Библиотека пуста");

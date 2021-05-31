@@ -5,14 +5,15 @@ import ProjectLibraryPartTwo.DAO.SQLLibraryDAO;
 import ProjectLibraryPartTwo.Entity.Book;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
-public class ManagementConsoleService {
-    private LibraryDAO libraryDAO = new SQLLibraryDAO();
+public final class ManagementConsoleService {
+    private final LibraryDAO libraryDAO = new SQLLibraryDAO();
 
     public void start() {
-        try (Scanner scanner = new Scanner(System.in)) {
+        try (Scanner scannerInt = new Scanner(System.in); Scanner scannerLine = new Scanner(System.in)) {
             int result;
             do {
                 System.out.println("******************************\n" +
@@ -22,7 +23,7 @@ public class ManagementConsoleService {
                         "\n 3. Удаление книги" +
                         "\n 4. Редактирование книги" +
                         "\n 0. выход");
-                result = scanner.nextInt();
+                result = scannerInt.nextInt();
                 switch (result) {
                     case 1: {
                         System.out.println("******************************\n" +
@@ -31,27 +32,33 @@ public class ManagementConsoleService {
                         System.out.println("1. По алфавиту по возрастанию.");
                         System.out.println("2. По алфавиту по убыванию.");
                         System.out.println("3. По добавлению (сперва новые, затем старые).");
-                        libraryDAO.writeAllBooks(scanner.nextInt());
+                        libraryDAO.writeAllBooks(scannerInt.nextInt());
                         break;
                     }
                     case 2:
                         System.out.println("Чтобы добавить книгу в библиотеку введите ID, название книги," +
                                 " жанр книги, дату написания в формате (yyyy-mm-dd), ID автора через Enter");
                         System.out.println("Введите ID ->");
-                        int id = scanner.nextInt();
+                        int id = scannerInt.nextInt();
+                        List<Book> allBooksInLibrary = libraryDAO.getAllBooks();
+                        boolean check = allBooksInLibrary.stream().anyMatch(book -> book.getId() == id);
+                        if (check) {
+                            System.out.println("Книга с таким ID уже существует, попробуйте другой ID");
+                            break;
+                        }
                         System.out.println("Введите название книги ->");
-                        String title = scanner.next();
+                        String title = scannerLine.nextLine();
                         System.out.println("Введите жанр книги из списка (COMEDY,BIOGRAPHY,FANTASTIC,ACTION,MELODRAMA,CHILDREN_BOOK) ->");
-                        String genre = scanner.next();
+                        String genre = scannerLine.nextLine();
                         boolean truth = Arrays.stream(Book.Genre.values()).anyMatch(t -> t.name().equals(genre));
                         if (!truth) {
                             System.out.println("Такого жанра нет в списке, повторите");
                             break;
                         }
                         System.out.println("Введите ID автора ->");
-                        int idAuthor = scanner.nextInt();
+                        int idAuthor = scannerInt.nextInt();
                         System.out.println("Введите дату публикации в формате (yyyy-mm-dd) ->");
-                        String date = scanner.next();
+                        String date = scannerLine.nextLine();
                         if (!date.matches("[0-9]{4}[-]+[0-9]{2}[-]+[0-9]{2}")) {
                             System.out.println("Некорректная дата или введена не по шаблону");
                             break;
@@ -66,7 +73,7 @@ public class ManagementConsoleService {
                         break;
                     case 3:
                         System.out.println("Чтобы удалить книгу из библиотеки введите ID книги ->");
-                        boolean resultDelete = libraryDAO.deleteBookById(scanner.nextInt());
+                        boolean resultDelete = libraryDAO.deleteBookById(scannerInt.nextInt());
                         System.out.println("Идет поиск в базе...");
                         TimeUnit.SECONDS.sleep(1);
                         System.out.println("Ожидайте...");
@@ -78,8 +85,7 @@ public class ManagementConsoleService {
                         break;
                     case 4:
                         System.out.println("Для редактирования книги вам необходимо ввести ID книги, новое название книги и новый жанр");
-                        boolean resultCorrect = libraryDAO.correctBookByIdNewTitleNewGenre(scanner.nextInt(), scanner.next(), scanner.next());
-                        System.out.println("Ожидайте, идёт обработка базы данных...");
+                        boolean resultCorrect = libraryDAO.correctBookByIdNewTitleNewGenre(scannerInt.nextInt(), scannerLine.nextLine(), scannerLine.nextLine());
                         TimeUnit.SECONDS.sleep(2);
                         System.out.println(resultCorrect ? "Книга успешно отредактирована" : "Книга не может быть отредактирована, повторите позже!");
                         break;
