@@ -1,4 +1,4 @@
-package ProjectLibraryPartOne;
+package projectLibraryPartOne.entity;
 
 public class Book {
 
@@ -43,14 +43,5 @@ public class Book {
 
     public void setGenre(String genre) {
         this.genre = Genre.valueOf(genre);
-    }
-
-    public enum Genre {
-        ACTION,
-        COMEDY,
-        MELODRAMA,
-        CHILDREN_BOOK,
-        FANTASTIC,
-        BIOGRAPHY
     }
 }

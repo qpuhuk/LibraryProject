@@ -1,11 +1,11 @@
-package ProjectLibraryPartTwo.DAO;
+package projectLibraryPartTwo.dao;
 
-import ProjectLibraryPartTwo.Entity.Author;
-import ProjectLibraryPartTwo.Entity.Book;
+import projectLibraryPartTwo.entity.Author;
+import projectLibraryPartTwo.entity.Book;
 
 import java.util.List;
 
-public interface LibraryDAO {
+public interface BookDao {
 
     void writeAllBooks(int choice);
 

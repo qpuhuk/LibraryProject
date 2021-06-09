@@ -1,4 +1,4 @@
-package ProjectLibraryPartTwo.Connection;
+package projectLibraryPartTwo.connection;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

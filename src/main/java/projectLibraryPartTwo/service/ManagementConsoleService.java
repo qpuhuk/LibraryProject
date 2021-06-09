@@ -1,8 +1,9 @@
-package ProjectLibraryPartTwo.Service;
+package projectLibraryPartTwo.service;
 
-import ProjectLibraryPartTwo.DAO.LibraryDAO;
-import ProjectLibraryPartTwo.DAO.SQLLibraryDAO;
-import ProjectLibraryPartTwo.Entity.Book;
+import projectLibraryPartTwo.dao.BookDao;
+import projectLibraryPartTwo.dao.BookDaoImpl;
+import projectLibraryPartTwo.entity.Book;
+import projectLibraryPartTwo.entity.Genre;
 
 import java.util.Arrays;
 import java.util.List;
@@ -10,7 +11,7 @@ import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 public final class ManagementConsoleService {
-    private final LibraryDAO libraryDAO = new SQLLibraryDAO();
+    private final BookDao libraryDAO = new BookDaoImpl();
 
     public void start() {
         try (Scanner scannerInt = new Scanner(System.in); Scanner scannerLine = new Scanner(System.in)) {
@@ -50,7 +51,7 @@ public final class ManagementConsoleService {
                         String title = scannerLine.nextLine();
                         System.out.println("Введите жанр книги из списка (COMEDY,BIOGRAPHY,FANTASTIC,ACTION,MELODRAMA,CHILDREN_BOOK) ->");
                         String genre = scannerLine.nextLine();
-                        boolean truth = Arrays.stream(Book.Genre.values()).anyMatch(t -> t.name().equals(genre));
+                        boolean truth = Arrays.stream(Genre.values()).anyMatch(t -> t.name().equals(genre));
                         if (!truth) {
                             System.out.println("Такого жанра нет в списке, повторите");
                             break;

@@ -1,8 +1,11 @@
-package ProjectLibraryPartTwo.DAO;
+package projectLibraryPartTwo.dao;
 
-import ProjectLibraryPartTwo.Connection.ConnectorBD;
-import ProjectLibraryPartTwo.Entity.Author;
-import ProjectLibraryPartTwo.Entity.Book;
+import projectLibraryPartTwo.connection.ConnectorBD;
+import projectLibraryPartTwo.entity.Author;
+import projectLibraryPartTwo.entity.Book;
+import projectLibraryPartTwo.entity.Genre;
+import projectLibraryPartTwo.service.AuthorService;
+import projectLibraryPartTwo.service.BookService;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -12,7 +15,7 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
-public class SQLLibraryDAO implements LibraryDAO {
+public class BookDaoImpl implements BookDao {
 
     @Override
     public List<Book> getAllBooks() {
@@ -20,7 +23,7 @@ public class SQLLibraryDAO implements LibraryDAO {
         try (Connection connection = ConnectorBD.getConnection()) {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(Queries.SELECT_ALL_BOOKS_BY_ID);
-            Book book = new Book();
+            BookService book = new BookService();
             while (resultSet.next()) {
                 listAllBooks.add(book.createBook(resultSet));
             }
@@ -38,7 +41,7 @@ public class SQLLibraryDAO implements LibraryDAO {
         try (Connection connection = ConnectorBD.getConnection()) {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(Queries.SELECT_ALL_AUTHORS);
-            Author author = new Author();
+            AuthorService author = new AuthorService();
             while (resultSet.next()) {
                 listAllAuthors.add(author.createAuthor(resultSet));
             }
@@ -74,7 +77,7 @@ public class SQLLibraryDAO implements LibraryDAO {
                     System.out.println("******************************\nНеверное значение");
             }
             if (resultSet != null) {
-                Book book = new Book();
+                BookService book = new BookService();
                 while (resultSet.next()) {
                     listAllBooks.add(book.createBook(resultSet));
                 }
@@ -105,7 +108,7 @@ public class SQLLibraryDAO implements LibraryDAO {
             PreparedStatement statement = connection.prepareStatement(Queries.INSERT_FROM_BOOKS_BY_ID);
             statement.setInt(1, id);
             statement.setString(2, title);
-            statement.setString(3, Book.Genre.valueOf(genre).name());
+            statement.setString(3, Genre.valueOf(genre).name());
             statement.setInt(5, idAuthor);
             DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             LocalDate localDate = LocalDate.parse(date, dateTimeFormatter);

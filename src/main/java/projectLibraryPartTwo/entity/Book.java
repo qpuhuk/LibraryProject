@@ -1,4 +1,4 @@
-package ProjectLibraryPartTwo.Entity;
+package projectLibraryPartTwo.entity;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -54,24 +54,6 @@ public class Book {
         this.author = author;
     }
 
-    public Book createBook(ResultSet resultSet) throws SQLException {
-        Book book = new Book();
-        Author author = new Author();
-        try {
-            author.setId(resultSet.getInt("id"));
-            author.setFirstName(resultSet.getString("firstname"));
-            author.setLastName(resultSet.getString("lastname"));
-            book.setId(resultSet.getInt("id_book"));
-            book.setTitle(resultSet.getString("title"));
-            book.setGenre(resultSet.getString("genre"));
-            book.setDateCreated(resultSet.getDate("DateCreated").toLocalDate());
-            book.setAuthor(author);
-        } catch (SQLException s) {
-            s.getStackTrace();
-        }
-        return book;
-    }
-
     @Override
     public String toString() {
         return "Book{" +
@@ -81,14 +63,5 @@ public class Book {
                 ", dateCreated=" + dateCreated +
                 ", author=" + author +
                 '}';
-    }
-
-    public enum Genre {
-        ACTION,
-        COMEDY,
-        MELODRAMA,
-        CHILDREN_BOOK,
-        FANTASTIC,
-        BIOGRAPHY
     }
 }

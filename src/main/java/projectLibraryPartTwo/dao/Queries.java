@@ -1,4 +1,4 @@
-package ProjectLibraryPartTwo.DAO;
+package projectLibraryPartTwo.dao;
 
 public class Queries {
     public static final String SELECT_ALL_BOOKS_BY_ID =

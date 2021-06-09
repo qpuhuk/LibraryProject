@@ -1,13 +1,23 @@
-package ProjectLibraryPartOne;
+package projectLibraryPartOne.service;
+
+import projectLibraryPartOne.entity.Book;
 
 import java.util.ArrayList;
 
-public class Library {
+public class LibraryService {
 
-    ArrayList<Book> listBooks;
+    private ArrayList<Book> listBooks;
 
-    public Library() {
+    public LibraryService() {
         this.listBooks = new ArrayList<>();
+    }
+
+    public ArrayList<Book> getListBooks() {
+        return listBooks;
+    }
+
+    public void setListBooks(ArrayList<Book> listBooks) {
+        this.listBooks = listBooks;
     }
 
     @Override
@@ -17,7 +27,7 @@ public class Library {
                 '}';
     }
 
-    void addBook(Book book) {
+    public void addBook(Book book) {
         if (listBooks.isEmpty()) {
             listBooks.add(book);
         } else {
@@ -37,7 +47,7 @@ public class Library {
         }
     }
 
-    public void getListBooks(Library library) {
+    public void getListBooks(LibraryService library) {
         if (listBooks.isEmpty()) {
             System.out.println("The list of books is empty");
         } else {
@@ -45,7 +55,7 @@ public class Library {
         }
     }
 
-    void deleteBook(Book book) {
+    public void deleteBook(Book book) {
         if (listBooks.isEmpty()) {
             System.out.println("List books is empty. Delete is impossible");
         } else {
@@ -65,7 +75,7 @@ public class Library {
         }
     }
 
-    void editBook(Book book, String genre) {
+    public void editBook(Book book, String genre) {
         if (!listBooks.contains(book)) {
             System.out.println("There is no such book in the database. Edit book impossible");
         } else {

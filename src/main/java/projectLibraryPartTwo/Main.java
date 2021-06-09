@@ -1,6 +1,6 @@
-package ProjectLibraryPartTwo;
+package projectLibraryPartTwo;
 
-import ProjectLibraryPartTwo.Service.ManagementConsoleService;
+import projectLibraryPartTwo.service.ManagementConsoleService;
 
 public class Main {
     public static void main(String[] args) {
