@@ -4,8 +4,8 @@ import projectLibraryPartTwo.connection.ConnectorBD;
 import projectLibraryPartTwo.entity.Author;
 import projectLibraryPartTwo.entity.Book;
 import projectLibraryPartTwo.entity.Genre;
-import projectLibraryPartTwo.service.AuthorService;
-import projectLibraryPartTwo.service.BookService;
+import projectLibraryPartTwo.service.AuthorServiceImpl;
+import projectLibraryPartTwo.service.BookServiceImpl;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -23,7 +23,7 @@ public class BookDaoImpl implements BookDao {
         try (Connection connection = ConnectorBD.getConnection()) {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(Queries.SELECT_ALL_BOOKS_BY_ID);
-            BookService book = new BookService();
+            BookServiceImpl book = new BookServiceImpl();
             while (resultSet.next()) {
                 listAllBooks.add(book.createBook(resultSet));
             }
@@ -41,7 +41,7 @@ public class BookDaoImpl implements BookDao {
         try (Connection connection = ConnectorBD.getConnection()) {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(Queries.SELECT_ALL_AUTHORS);
-            AuthorService author = new AuthorService();
+            AuthorServiceImpl author = new AuthorServiceImpl();
             while (resultSet.next()) {
                 listAllAuthors.add(author.createAuthor(resultSet));
             }
@@ -77,7 +77,7 @@ public class BookDaoImpl implements BookDao {
                     System.out.println("******************************\nНеверное значение");
             }
             if (resultSet != null) {
-                BookService book = new BookService();
+                BookServiceImpl book = new BookServiceImpl();
                 while (resultSet.next()) {
                     listAllBooks.add(book.createBook(resultSet));
                 }

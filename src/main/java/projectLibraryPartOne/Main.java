@@ -1,14 +1,14 @@
 package projectLibraryPartOne;
 
 import projectLibraryPartOne.entity.Book;
-import projectLibraryPartOne.service.LibraryService;
+import projectLibraryPartOne.service.LibraryServiceImpl;
 
 import java.util.Collections;
 
 public class Main {
     public static void main(String[] args) {
 
-        LibraryService library = new LibraryService();
+        LibraryServiceImpl library = new LibraryServiceImpl();
         Book book = new Book(2, "English", "ACTION");
         Book book1 = new Book(1, "Burda", "FANTASTIC");
         Book book2 = new Book(4, "Russian", "CHILDREN_BOOK");
